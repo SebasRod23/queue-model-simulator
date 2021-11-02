@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
 import { css } from '@emotion/react';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -14,8 +15,17 @@ const rootDivStyle = css({
 
 function App() {
   return (
-    <div css={rootDivStyle}>
-      <h1>Queue Model Simulator</h1>
+    <div>
+      <header>
+        <AppBar position='static'>
+          <Toolbar variant='dense'>
+            <Typography variant='h6' color='inherit' component='div'>
+              Queue Model Simulator
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </header>
+      <div css={rootDivStyle}></div>
     </div>
   );
 }
