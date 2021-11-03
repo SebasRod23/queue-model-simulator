@@ -1,18 +1,19 @@
+import { Queue } from '../interfaces/Queue';
 import { QueueData } from '../interfaces/QueueData';
 
-export class MMs {
-  public static lambda: number;
-  public static mi: number;
-  public static s: number;
-  public static n: number;
+export const MMs: Queue = class MMs {
+  static lambda: number;
+  static mi: number;
+  static s: number;
+  static n: number;
 
   private static data: QueueData;
 
   public static simulate = async (
     lambda: number,
     mi: number,
-    s: number,
     n: number = 1,
+    s: number,
   ): Promise<QueueData> => {
     if (lambda < 0 || mi < 0 || s < 0 || n < 0)
       Promise.reject('All parameters need to be greater than 0');
@@ -57,4 +58,4 @@ export class MMs {
       );
     }
   };
-}
+};
