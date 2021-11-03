@@ -6,6 +6,8 @@ export class MM1 {
     mi: number,
     n: number = 1,
   ): Promise<QueueData> => {
+    if (lambda < 0 || mi < 0 || n < 0)
+      Promise.reject('All parameters need to be greater than 0');
     const rho = lambda / mi;
     const p0 = 1 - rho;
     const pn = p0 * Math.pow(rho, n);
