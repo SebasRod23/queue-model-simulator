@@ -1,22 +1,29 @@
-import { Queue } from '../interfaces/Queue';
 import { QueueData } from '../interfaces/QueueData';
 
-export const MMs: Queue = class MMs {
+export class MMs {
   static lambda: number;
   static mi: number;
   static s: number;
   static n: number;
 
-  private static data: QueueData;
+  private static data: QueueData = {
+    rho: 0,
+    pn: 0,
+    p0: 0,
+    l: 0,
+    lq: 0,
+    w: 0,
+    wq: 0,
+  };
 
   public static simulate = async (
     lambda: number,
     mi: number,
-    n: number = 1,
     s: number,
+    n: number,
   ): Promise<QueueData> => {
-    if (lambda < 0 || mi < 0 || s < 0 || n < 0)
-      Promise.reject('All parameters need to be greater than 0');
+    if (lambda < 0 || mi < 0 || s < 0 || n <= 0)
+      Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
     this.mi = mi;
@@ -37,8 +44,8 @@ export const MMs: Queue = class MMs {
   };
 
   private static calculateP0 = (): number => {
-    let divisor = 0;
-    for (let i = 0; i < this.s - 1; i++) {
+    let divisor = 1;
+    for (let i = 1; i < this.s; i++) {
       divisor += Math.pow(this.lambda / this.mi, i) / i!;
     }
     divisor +=
@@ -58,4 +65,4 @@ export const MMs: Queue = class MMs {
       );
     }
   };
-};
+}

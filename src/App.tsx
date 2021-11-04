@@ -2,6 +2,7 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { AppBar, Toolbar, Typography } from '@mui/material';
+import Test from './containers/test';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -25,7 +26,9 @@ function App() {
           </Toolbar>
         </AppBar>
       </header>
-      <div css={rootDivStyle}></div>
+      <div css={rootDivStyle}>
+        <Test />
+      </div>
     </div>
   );
 }
