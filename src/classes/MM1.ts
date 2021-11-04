@@ -1,9 +1,9 @@
 import { QueueData } from '../interfaces/QueueData';
 
 export class MM1 {
-  static lambda: number;
-  static mi: number;
-  static n: number;
+  private static lambda: number;
+  private static mi: number;
+  private static n: number;
 
   private static data: QueueData = {
     rho: 0,

@@ -1,10 +1,10 @@
 import { QueueData } from '../interfaces/QueueData';
 
 export class MMs {
-  static lambda: number;
-  static mi: number;
-  static s: number;
-  static n: number;
+  private static lambda: number;
+  private static mi: number;
+  private static s: number;
+  private static n: number;
 
   private static data: QueueData = {
     rho: 0,
