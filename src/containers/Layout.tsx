@@ -13,10 +13,12 @@ import {
   Typography,
 } from '@mui/material';
 
-import { QueueModelsOptions } from '../enums/QueueModelsOptions';
-import { divStyleRows } from '../styles/styles';
 import InputQueueModel from '../components/InputQueueModel';
-import { InputValues } from '../interfaces/types';
+import PnCalculator from '../components/PnCalculator';
+import QueueModelCharacteristics from '../components/QueueModelCharacteristics';
+import { QueueModelsOptions } from '../enums/QueueModelsOptions';
+import { InputValues, QueueData } from '../interfaces/types';
+import { divStyleRows } from '../styles/styles';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -43,13 +45,14 @@ const Layout = () => {
 
   const [inputNotComplete, setInputNotComplete] = useState(true);
 
+  const [result, setResult] = useState<undefined | QueueData>();
+
   const handleQueueModelChange = (event: SelectChangeEvent) => {
     const option = event.target.value;
 
     setOptionQueueModel(option);
 
-    setInputValues(emptyInputValues);
-    validateCompleteInput(emptyInputValues);
+    clean();
   };
 
   const validateCompleteInput = (inputVals: InputValues) => {
@@ -60,6 +63,24 @@ const Layout = () => {
     });
 
     setInputNotComplete(!check);
+  };
+
+  const calculate = () => {
+    setResult({
+      rho: 5,
+      l: 5,
+      lq: 5,
+      w: 5,
+      wq: 5,
+      lambdaE: 5,
+      pn: '(1/3)n',
+    } as QueueData);
+  };
+
+  const clean = () => {
+    setInputValues(emptyInputValues);
+    validateCompleteInput(emptyInputValues);
+    setResult(undefined);
   };
 
   return (
@@ -75,12 +96,15 @@ const Layout = () => {
       </header>
       <div css={rootDivStyle}>
         <form css={divStyleRows}>
-          <FormControl fullWidth>
+          <FormControl fullWidth focused={result ? false : undefined}>
             <InputLabel>Queue Model</InputLabel>
             <Select
               value={optionQueueModel}
               label='Queue Model'
               onChange={handleQueueModelChange}
+              inputProps={{
+                readOnly: result !== undefined,
+              }}
             >
               <MenuItem value={QueueModelsOptions.mm1}>M/M/1</MenuItem>
               <MenuItem value={QueueModelsOptions.mms}>M/M/s</MenuItem>
@@ -100,12 +124,37 @@ const Layout = () => {
             }
             validateCompleteInput={validateCompleteInput}
             requiredByOption={requiredByOption[optionQueueModel]}
+            lockInput={result !== undefined}
           />
 
-          <Button variant='contained' disabled={inputNotComplete}>
-            Calculate
-          </Button>
+          {!result && (
+            <Button
+              variant='contained'
+              disabled={inputNotComplete}
+              onClick={calculate}
+            >
+              Calculate
+            </Button>
+          )}
+
+          {result && (
+            <Button variant='contained' color='error' onClick={clean}>
+              Start again
+            </Button>
+          )}
         </form>
+
+        <br />
+
+        {result && (
+          <>
+            <QueueModelCharacteristics characteristicsData={result} />
+
+            <br />
+
+            <PnCalculator />
+          </>
+        )}
       </div>
     </>
   );

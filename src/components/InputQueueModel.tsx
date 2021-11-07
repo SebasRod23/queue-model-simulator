@@ -1,17 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import { css } from '@mui/styled-engine';
 import { TextField } from '@mui/material';
 
-import { InputValues } from '../interfaces/types';
+import { InputValues, ObjectWithKeyStr } from '../interfaces/types';
 import { divStyleColumns } from '../styles/styles';
-
-const queueModelInputsStyle = css({
-  ...divStyleColumns,
-  '& > *': {
-    flexGrow: 1,
-  },
-});
 
 interface InputQueueModelProps {
   inputValues: InputValues;
@@ -21,10 +13,11 @@ interface InputQueueModelProps {
     inputVals: InputValues,
     numOfRan?: string | undefined,
   ) => void;
+  lockInput: boolean;
 }
 
 const InputQueueModel = (props: InputQueueModelProps) => {
-  const labels: { [key: string]: string } = {
+  const labels: ObjectWithKeyStr = {
     lambda: 'λ',
     mi: 'μ',
     s: 's',
@@ -44,13 +37,17 @@ const InputQueueModel = (props: InputQueueModelProps) => {
   };
 
   return (
-    <div css={queueModelInputsStyle}>
+    <div css={divStyleColumns}>
       {props.requiredByOption.map((inputStr, index) => (
         <TextField
           key={`input-${index}-${inputStr}`}
           label={labels[inputStr]}
           variant='outlined'
           required
+          InputProps={{
+            readOnly: props.lockInput,
+          }}
+          focused={props.lockInput ? false : undefined}
           onChange={(event) => handleInputChange(inputStr, event.target.value)}
           value={props.inputValues[inputStr]}
         />

@@ -1,8 +1,8 @@
-interface objectWithKeyStr {
-  [key: string]: string;
+export interface ObjectWithKeyStr {
+  [key: string]: string | number | undefined;
 }
 
-export interface InputValues extends objectWithKeyStr {
+export interface InputValues extends ObjectWithKeyStr {
   lambda: string;
   mi: string;
   s: string;
@@ -16,4 +16,14 @@ export interface GeneratorValues {
   s: number;
   k: number;
   n: number;
+}
+
+export interface QueueData extends ObjectWithKeyStr {
+  rho: number;
+  l: number;
+  lq: number;
+  w: number;
+  wq: number;
+  pn: string;
+  lambdaE?: number;
 }
