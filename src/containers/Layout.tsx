@@ -13,11 +13,12 @@ import {
   Typography,
 } from '@mui/material';
 
-import { QueueModelsOptions } from '../enums/QueueModelsOptions';
-import { divStyleRows } from '../styles/styles';
 import InputQueueModel from '../components/InputQueueModel';
-import { InputValues, QueueData } from '../interfaces/types';
+import PnCalculator from '../components/PnCalculator';
 import QueueModelCharacteristics from '../components/QueueModelCharacteristics';
+import { QueueModelsOptions } from '../enums/QueueModelsOptions';
+import { InputValues, QueueData } from '../interfaces/types';
+import { divStyleRows } from '../styles/styles';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -145,7 +146,15 @@ const Layout = () => {
 
         <br />
 
-        {result && <QueueModelCharacteristics characteristicsData={result} />}
+        {result && (
+          <>
+            <QueueModelCharacteristics characteristicsData={result} />
+
+            <br />
+
+            <PnCalculator />
+          </>
+        )}
       </div>
     </>
   );
