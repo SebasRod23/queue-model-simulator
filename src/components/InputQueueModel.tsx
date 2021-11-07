@@ -21,6 +21,7 @@ interface InputQueueModelProps {
     inputVals: InputValues,
     numOfRan?: string | undefined,
   ) => void;
+  lockInput: boolean;
 }
 
 const InputQueueModel = (props: InputQueueModelProps) => {
@@ -51,6 +52,10 @@ const InputQueueModel = (props: InputQueueModelProps) => {
           label={labels[inputStr]}
           variant='outlined'
           required
+          InputProps={{
+            readOnly: props.lockInput,
+          }}
+          focused={props.lockInput ? false : undefined}
           onChange={(event) => handleInputChange(inputStr, event.target.value)}
           value={props.inputValues[inputStr]}
         />

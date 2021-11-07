@@ -43,13 +43,14 @@ const Layout = () => {
 
   const [inputNotComplete, setInputNotComplete] = useState(true);
 
+  const [result, setResult] = useState<undefined | { key: string }>();
+
   const handleQueueModelChange = (event: SelectChangeEvent) => {
     const option = event.target.value;
 
     setOptionQueueModel(option);
 
-    setInputValues(emptyInputValues);
-    validateCompleteInput(emptyInputValues);
+    clean();
   };
 
   const validateCompleteInput = (inputVals: InputValues) => {
@@ -60,6 +61,16 @@ const Layout = () => {
     });
 
     setInputNotComplete(!check);
+  };
+
+  const calculate = () => {
+    setResult({ key: 'UwU' });
+  };
+
+  const clean = () => {
+    setInputValues(emptyInputValues);
+    validateCompleteInput(emptyInputValues);
+    setResult(undefined);
   };
 
   return (
@@ -75,12 +86,15 @@ const Layout = () => {
       </header>
       <div css={rootDivStyle}>
         <form css={divStyleRows}>
-          <FormControl fullWidth>
+          <FormControl fullWidth focused={result ? false : undefined}>
             <InputLabel>Queue Model</InputLabel>
             <Select
               value={optionQueueModel}
               label='Queue Model'
               onChange={handleQueueModelChange}
+              inputProps={{
+                readOnly: result !== undefined,
+              }}
             >
               <MenuItem value={QueueModelsOptions.mm1}>M/M/1</MenuItem>
               <MenuItem value={QueueModelsOptions.mms}>M/M/s</MenuItem>
@@ -100,12 +114,33 @@ const Layout = () => {
             }
             validateCompleteInput={validateCompleteInput}
             requiredByOption={requiredByOption[optionQueueModel]}
+            lockInput={result !== undefined}
           />
 
-          <Button variant='contained' disabled={inputNotComplete}>
-            Calculate
-          </Button>
+          {!result && (
+            <Button
+              variant='contained'
+              disabled={inputNotComplete}
+              onClick={calculate}
+            >
+              Calculate
+            </Button>
+          )}
+
+          {result && (
+            <Button variant='contained' color='error' onClick={clean}>
+              Start again
+            </Button>
+          )}
         </form>
+
+        <br />
+
+        {result && (
+          <>
+            <h1>Results</h1>
+          </>
+        )}
       </div>
     </>
   );
