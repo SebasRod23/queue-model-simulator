@@ -16,7 +16,8 @@ import {
 import { QueueModelsOptions } from '../enums/QueueModelsOptions';
 import { divStyleRows } from '../styles/styles';
 import InputQueueModel from '../components/InputQueueModel';
-import { InputValues } from '../interfaces/types';
+import { InputValues, QueueData } from '../interfaces/types';
+import QueueModelCharacteristics from '../components/QueueModelCharacteristics';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -43,7 +44,7 @@ const Layout = () => {
 
   const [inputNotComplete, setInputNotComplete] = useState(true);
 
-  const [result, setResult] = useState<undefined | { key: string }>();
+  const [result, setResult] = useState<undefined | QueueData>();
 
   const handleQueueModelChange = (event: SelectChangeEvent) => {
     const option = event.target.value;
@@ -64,7 +65,15 @@ const Layout = () => {
   };
 
   const calculate = () => {
-    setResult({ key: 'UwU' });
+    setResult({
+      rho: 5,
+      l: 5,
+      lq: 5,
+      w: 5,
+      wq: 5,
+      lambdaE: 5,
+      pn: '(1/3)n',
+    } as QueueData);
   };
 
   const clean = () => {
@@ -136,11 +145,7 @@ const Layout = () => {
 
         <br />
 
-        {result && (
-          <>
-            <h1>Results</h1>
-          </>
-        )}
+        {result && <QueueModelCharacteristics characteristicsData={result} />}
       </div>
     </>
   );
