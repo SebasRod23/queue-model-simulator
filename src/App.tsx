@@ -1,34 +1,10 @@
-/** @jsxImportSource @emotion/react */
 import React from 'react';
-import { css } from '@emotion/react';
-import { AppBar, Toolbar, Typography } from '@mui/material';
-import Test from './containers/test';
-
-const rootDivStyle = css({
-  margin: '32px 24px',
-  '@media (max-width: 600px)': {
-    margin: '24px 16px',
-  },
-  '& > *': {
-    width: '100%',
-  },
-});
+import Layout from './containers/Layout';
 
 function App() {
   return (
     <div>
-      <header>
-        <AppBar position='static'>
-          <Toolbar variant='dense'>
-            <Typography variant='h6' color='inherit' component='div'>
-              Queue Model Simulator
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </header>
-      <div css={rootDivStyle}>
-        <Test />
-      </div>
+      <Layout />
     </div>
   );
 }
