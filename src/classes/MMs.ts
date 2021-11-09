@@ -19,7 +19,8 @@ export class MMs {
     mi: number,
     s: number,
   ): Promise<QueueData> => {
-    if (lambda < 0 || mi < 0 || s < 0) Promise.reject('Parameters not valid');
+    if (lambda <= 0 || mi <= 0 || s <= 0 || lambda >= s * mi)
+      Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
     this.mi = mi;

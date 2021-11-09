@@ -1,6 +1,6 @@
 import { QueueData } from '../interfaces/QueueData';
 
-export class MM1 {
+export class MG1 {
   private static lambda: number;
   private static mi: number;
 
@@ -15,21 +15,23 @@ export class MM1 {
 
   public static simulate = async (
     lambda: number,
-    mi: number,
+    mean: number,
+    sd: number,
   ): Promise<QueueData> => {
-    if (lambda <= 0 || mi <= 0 || lambda >= mi)
+    if (lambda <= 0 || mean <= 0 || sd < 0 || lambda >= 1 / mean)
       Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
-    this.mi = mi;
+    this.mi = 1 / mean;
 
     this.data.rho = this.lambda / this.mi;
     this.data.p0 = 1 - this.data.rho;
-    this.data.l = this.lambda / (this.mi - this.lambda);
     this.data.lq =
-      Math.pow(this.lambda, 2) / (this.mi * (this.mi - this.lambda));
-    this.data.w = this.data.l / this.lambda;
+      (Math.pow(this.lambda * sd, 2) + Math.pow(this.data.rho, 2)) /
+      (2 * (1 - this.data.rho));
+    this.data.l = this.data.rho + this.data.lq;
     this.data.wq = this.data.lq / this.lambda;
+    this.data.w = this.data.wq + 1 / this.mi;
 
     return this.data;
   };
