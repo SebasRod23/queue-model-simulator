@@ -69,4 +69,12 @@ export class MMs {
     }
     return pn;
   };
+
+  public static calculateCost = async (
+    Cw: number,
+    Cs: number,
+  ): Promise<number> => {
+    if (Cw < 0 || Cs < 0) Promise.reject('Parameters not valid');
+    return this.data.lq * Cw + this.s * Cs;
+  };
 }
