@@ -17,7 +17,8 @@ export class MM1 {
     lambda: number,
     mi: number,
   ): Promise<QueueData> => {
-    if (lambda < 0 || mi < 0) Promise.reject('Parameters not valid');
+    if (lambda <= 0 || mi <= 0 || lambda >= mi)
+      Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
     this.mi = mi;
@@ -27,8 +28,8 @@ export class MM1 {
     this.data.l = this.lambda / (this.mi - this.lambda);
     this.data.lq =
       Math.pow(this.lambda, 2) / (this.mi * (this.mi - this.lambda));
-    this.data.w = 1 / (this.mi - this.lambda);
-    this.data.wq = this.lambda / (this.mi * (this.mi - this.lambda));
+    this.data.w = this.data.l / this.lambda;
+    this.data.wq = this.data.lq / this.lambda;
 
     return this.data;
   };

@@ -15,7 +15,7 @@ const Test: React.FC = () => {
       <Button onClick={async () => console.log(await MM1.generateToPn(3))}>
         MM1 (n=3)
       </Button>
-      <Button onClick={async () => console.log(await MMs.simulate(2, 3, 2))}>
+      <Button onClick={async () => console.log(await MMs.simulate(7, 3, 2))}>
         MMs
       </Button>
       <Button onClick={async () => console.log(await MMs.generateToPn(3))}>
@@ -24,10 +24,10 @@ const Test: React.FC = () => {
       <Button
         onClick={async () => console.log(await MMsk.simulate(2, 3, 1, 3))}
       >
-        MM1sk
+        MMsk
       </Button>
       <Button onClick={async () => console.log(await MMsk.generateToPn(4))}>
-        MM1 (n=3)
+        MMsk (n=3)
       </Button>
       <Button
         onClick={async () => console.log(await MG1.simulate(3, 1 / 5, 1 / 10))}

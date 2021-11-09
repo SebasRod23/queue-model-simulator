@@ -18,7 +18,7 @@ export class MG1 {
     mean: number,
     sd: number,
   ): Promise<QueueData> => {
-    if (lambda < 0 || mean < 0 || sd < 0)
+    if (lambda <= 0 || mean <= 0 || sd < 0 || lambda >= 1 / mean)
       Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
