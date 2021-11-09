@@ -7,15 +7,17 @@ export interface InputValues extends ObjectWithKeyStr {
   mi: string;
   s: string;
   k: string;
-  n: string;
+  mean: string;
+  sd: string;
 }
 
-export interface GeneratorValues {
-  lambda: number;
-  mi: number;
-  s: number;
-  k: number;
-  n: number;
+export interface QueueModelValues {
+  lambda?: number;
+  mi?: number;
+  s?: number;
+  k?: number;
+  mean?: number;
+  sd?: number;
 }
 
 export interface QueueData extends ObjectWithKeyStr {
@@ -24,6 +26,7 @@ export interface QueueData extends ObjectWithKeyStr {
   lq: number;
   w: number;
   wq: number;
-  pn: string;
   lambdaE?: number;
+  p0: number;
+  pk?: number;
 }

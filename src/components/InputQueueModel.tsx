@@ -22,7 +22,8 @@ const InputQueueModel = (props: InputQueueModelProps) => {
     mi: 'μ',
     s: 's',
     k: 'k',
-    n: 'n',
+    mean: 'Mean',
+    sd: 'σ',
   };
 
   const handleInputChange = (name: string, strNumber: string) => {
