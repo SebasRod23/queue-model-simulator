@@ -18,7 +18,7 @@ export class MM1 {
     mi: number,
   ): Promise<QueueData> => {
     if (lambda <= 0 || mi <= 0 || lambda >= mi)
-      Promise.reject('Parameters not valid');
+      return Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
     this.mi = mi;
@@ -35,7 +35,7 @@ export class MM1 {
   };
 
   public static generateToPn = async (n: number): Promise<number[]> => {
-    if (n <= 0) Promise.reject('Parameters not valid');
+    if (n <= 0) return Promise.reject('Parameters not valid');
     const pn = [this.data.p0];
     for (let i = 1; i <= n; i++) {
       pn.push(this.data.p0 * Math.pow(this.data.rho, i));
@@ -47,7 +47,7 @@ export class MM1 {
     Cw: number,
     Cs: number,
   ): Promise<number> => {
-    if (Cw < 0 || Cs < 0) Promise.reject('Parameters not valid');
+    if (Cw < 0 || Cs < 0) return Promise.reject('Parameters not valid');
     return this.data.lq * Cw + Cs;
   };
 }

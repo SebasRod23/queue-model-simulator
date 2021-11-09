@@ -31,7 +31,7 @@ export class MMsk {
       s > k ||
       lambda === s * mi
     )
-      Promise.reject('Parameters not valid');
+      return Promise.reject('Parameters not valid');
 
     this.lambda = lambda;
     this.mi = mi;
@@ -95,7 +95,7 @@ export class MMsk {
   };
 
   public static generateToPn = async (n: number): Promise<number[]> => {
-    if (n <= 0) Promise.reject('Parameters not valid');
+    if (n <= 0) return Promise.reject('Parameters not valid');
     const pn = [this.data.p0];
     for (let i = 1; i <= n; i++) {
       if (i > this.k) pn.push(0);
@@ -108,7 +108,7 @@ export class MMsk {
     Cw: number,
     Cs: number,
   ): Promise<number> => {
-    if (Cw < 0 || Cs < 0) Promise.reject('Parameters not valid');
+    if (Cw < 0 || Cs < 0) return Promise.reject('Parameters not valid');
     return this.data.lq * Cw + this.s * Cs;
   };
 }
