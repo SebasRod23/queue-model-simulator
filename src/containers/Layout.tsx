@@ -17,13 +17,14 @@ import InputQueueModel from '../components/InputQueueModel';
 import PnCalculator from '../components/PnCalculator';
 import QueueModelCharacteristics from '../components/QueueModelCharacteristics';
 import { QueueModelsOptions } from '../enums/QueueModelsOptions';
-import { InputValues, QueueData } from '../interfaces/types';
-import { divStyleRows } from '../styles/styles';
+import { convertInputToValues } from '../utils/convertInputToValues';
 import { MM1 } from '../classes/MM1';
 import { MEk1 } from '../classes/MEk1';
 import { MG1 } from '../classes/MG1';
 import { MMsk } from '../classes/MMsk';
 import { MMs } from '../classes/MMs';
+import { InputValues, QueueData } from '../interfaces/types';
+import { divStyleRows } from '../styles/styles';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -60,19 +61,8 @@ const Layout = () => {
 
   const [result, setResult] = useState<undefined | QueueData>();
 
-  const convertInputToValues = (data: InputValues) => {
-    const transformedData: { [key: string]: number } = {};
-
-    Object.keys(inputValues).forEach((key) => {
-      const value = (inputValues as any)[key];
-
-      if (value === '') return;
-
-      transformedData[key] = Number(value);
-    });
-
-    return transformedData;
-  };
+  const [n, setN] = useState('');
+  const [pns, setPns] = useState<number[]>([]);
 
   const getCurrentQueueModel = () => {
     switch (optionQueueModel) {
@@ -91,10 +81,13 @@ const Layout = () => {
 
   const calculateParams = async () => {
     const inputToValues = convertInputToValues(inputValues);
-    console.log('Input', inputToValues);
     const params = await getCurrentQueueModel().simulate(inputToValues);
-    console.log('Result', params);
     setResult(params);
+  };
+
+  const calculatePns = async () => {
+    const newPns = await getCurrentQueueModel().generateToPn(Number(n));
+    setPns(newPns);
   };
 
   const validateCompleteInput = (inputVals: InputValues) => {
@@ -193,7 +186,12 @@ const Layout = () => {
 
             <br />
 
-            <PnCalculator />
+            <PnCalculator
+              n={n}
+              setN={setN}
+              pns={pns}
+              calculatePns={calculatePns}
+            />
           </>
         )}
       </div>

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from 'react';
+import React from 'react';
 import { css } from '@emotion/react';
 import {
   TextField,
@@ -28,10 +28,14 @@ const RandomsListBox = css({
   },
 });
 
-const PnCalculator = () => {
-  const [n, setN] = useState('');
-  const [pns, setPns] = useState<number[]>([]);
+interface PnCalculatorProps {
+  n: string;
+  setN: React.Dispatch<React.SetStateAction<string>>;
+  pns: number[];
+  calculatePns: () => Promise<void>;
+}
 
+const PnCalculator = (props: PnCalculatorProps) => {
   const rowHeight = 30;
 
   const renderRow = (rowProps: ListChildComponentProps) => {
@@ -42,11 +46,11 @@ const PnCalculator = () => {
         <ListItemButton
           style={{ height: `${rowHeight}px` }}
           onClick={() => {
-            navigator.clipboard.writeText(String(pns[index]));
+            navigator.clipboard.writeText(String(props.pns[index]));
           }}
         >
           <ListItemText primary={`P${index}`} />
-          <ListItemText primary={`${pns[index]}`} />
+          <ListItemText primary={`${props.pns[index]}`} />
         </ListItemButton>
       </ListItem>
     );
@@ -57,11 +61,7 @@ const PnCalculator = () => {
     const number = Number(strNumber);
     if (isNaN(number) && strNumber !== '') return;
 
-    setN(strNumber);
-  };
-
-  const getPn = () => {
-    setPns([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    props.setN(strNumber);
   };
 
   return (
@@ -72,10 +72,14 @@ const PnCalculator = () => {
           label={'Calculate up to n'}
           variant='outlined'
           required
-          value={n}
+          value={props.n}
           onChange={(event) => handleInputChange(event.target.value)}
         />
-        <Button variant='contained' onClick={getPn} disabled={n === ''}>
+        <Button
+          variant='contained'
+          onClick={props.calculatePns}
+          disabled={props.n === ''}
+        >
           Calculate up to n
         </Button>
       </form>
@@ -83,14 +87,14 @@ const PnCalculator = () => {
       <br />
       <br />
 
-      {pns.length > 0 && (
+      {props.pns.length > 0 && (
         <div css={RandomsListDiv}>
           <Box css={RandomsListBox}>
             <FixedSizeList
-              height={Math.min(300, pns.length * 30)}
+              height={Math.min(300, props.pns.length * 30)}
               width='100%'
               itemSize={rowHeight}
-              itemCount={pns.length}
+              itemCount={props.pns.length}
               overscanCount={10}
             >
               {renderRow}
@@ -100,7 +104,7 @@ const PnCalculator = () => {
           <CSVLink
             data={[
               ['Pn', 'Value'],
-              ...pns.map((random, index) => [index, random]),
+              ...props.pns.map((random, index) => [index, random]),
             ]}
             filename='pn.csv'
             style={{ textDecoration: 'none' }}
