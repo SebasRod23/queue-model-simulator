@@ -1,4 +1,4 @@
-import { QueueData } from '../interfaces/QueueData';
+import { QueueData, QueueModelValues } from '../interfaces/types';
 
 export class MG1 {
   private static lambda: number;
@@ -13,11 +13,14 @@ export class MG1 {
     wq: 0,
   };
 
-  public static simulate = async (
-    lambda: number,
-    mean: number,
-    sd: number,
-  ): Promise<QueueData> => {
+  public static simulate = async ({
+    lambda,
+    mean,
+    sd,
+  }: QueueModelValues): Promise<QueueData> => {
+    if (!lambda || !mean || !sd)
+      return Promise.reject('Parameters are undefined');
+
     if (lambda <= 0 || mean <= 0 || sd < 0 || lambda >= 1 / mean)
       return Promise.reject('Parameters not valid');
 

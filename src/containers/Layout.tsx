@@ -17,8 +17,15 @@ import InputQueueModel from '../components/InputQueueModel';
 import PnCalculator from '../components/PnCalculator';
 import QueueModelCharacteristics from '../components/QueueModelCharacteristics';
 import { QueueModelsOptions } from '../enums/QueueModelsOptions';
-import { InputValues, QueueData } from '../interfaces/types';
+import { convertInputToValues } from '../utils/convertInputToValues';
+import { MM1 } from '../classes/MM1';
+import { MEk1 } from '../classes/MEk1';
+import { MG1 } from '../classes/MG1';
+import { MMsk } from '../classes/MMsk';
+import { MMs } from '../classes/MMs';
+import { InputValues, QueueCostParams, QueueData } from '../interfaces/types';
 import { divStyleRows } from '../styles/styles';
+import QueueModelCost from '../components/QueueModelCost';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -31,28 +38,75 @@ const rootDivStyle = css({
 });
 
 const Layout = () => {
-  const emptyInputValues = { lambda: '', mi: '', s: '', k: '', n: '' };
-
-  let requiredByOption: { [key: string]: string[] } = {
-    [QueueModelsOptions.mm1]: ['lambda', 'mi', 'n'],
-    [QueueModelsOptions.mms]: ['lambda', 'mi', 's', 'n'],
-    [QueueModelsOptions.mmsk]: ['lambda', 'mi', 's', 'k', 'n'],
-    [QueueModelsOptions.mg1]: ['lambda', 'mi', 'n'],
+  const emptyInputValues = {
+    lambda: '',
+    mi: '',
+    s: '',
+    k: '',
+    mean: '',
+    sd: '',
   };
 
-  const [optionQueueModel, setOptionQueueModel] = useState<string>('1');
-  const [inputValues, setInputValues] = useState<InputValues>(emptyInputValues);
+  let requiredByOption: { [key: string]: string[] } = {
+    [QueueModelsOptions.mm1]: ['lambda', 'mi'],
+    [QueueModelsOptions.mms]: ['lambda', 'mi', 's'],
+    [QueueModelsOptions.mmsk]: ['lambda', 'mi', 's', 'k'],
+    [QueueModelsOptions.mg1AndMd1]: ['lambda', 'mean', 'sd'],
+    [QueueModelsOptions.mek1]: ['lambda', 'mean', 'k'],
+  };
 
   const [inputNotComplete, setInputNotComplete] = useState(true);
 
+  const [optionQueueModel, setOptionQueueModel] = useState<string>('1');
+
+  const [inputValues, setInputValues] = useState<InputValues>(emptyInputValues);
+
   const [result, setResult] = useState<undefined | QueueData>();
 
-  const handleQueueModelChange = (event: SelectChangeEvent) => {
-    const option = event.target.value;
+  const [costParams, setCostParams] = useState<QueueCostParams>({
+    Cw: '',
+    Cs: '',
+  });
 
-    setOptionQueueModel(option);
+  const [cost, setCost] = useState<undefined | number>();
 
-    clean();
+  const [n, setN] = useState('');
+  const [pns, setPns] = useState<number[]>([]);
+
+  const getCurrentQueueModel = () => {
+    switch (optionQueueModel) {
+      case QueueModelsOptions.mm1:
+        return MM1;
+      case QueueModelsOptions.mms:
+        return MMs;
+      case QueueModelsOptions.mmsk:
+        return MMsk;
+      case QueueModelsOptions.mg1AndMd1:
+        return MG1;
+      default:
+        return MEk1;
+    }
+  };
+
+  const calculateParams = async () => {
+    const inputToValues = convertInputToValues(inputValues);
+    const params = await getCurrentQueueModel().simulate(inputToValues);
+    setResult(params);
+  };
+
+  const calculateCost = async () => {
+    const inputToValues = convertInputToValues(costParams);
+
+    const newCost = await getCurrentQueueModel().calculateCost(
+      inputToValues.Cw,
+      inputToValues.Cs,
+    );
+    setCost(newCost);
+  };
+
+  const calculatePns = async () => {
+    const newPns = await getCurrentQueueModel().generateToPn(Number(n));
+    setPns(newPns);
   };
 
   const validateCompleteInput = (inputVals: InputValues) => {
@@ -65,22 +119,18 @@ const Layout = () => {
     setInputNotComplete(!check);
   };
 
-  const calculate = () => {
-    setResult({
-      rho: 5,
-      l: 5,
-      lq: 5,
-      w: 5,
-      wq: 5,
-      lambdaE: 5,
-      pn: '(1/3)n',
-    } as QueueData);
-  };
-
   const clean = () => {
     setInputValues(emptyInputValues);
     validateCompleteInput(emptyInputValues);
     setResult(undefined);
+  };
+
+  const handleQueueModelChange = (event: SelectChangeEvent) => {
+    const option = event.target.value;
+
+    setOptionQueueModel(option);
+
+    clean();
   };
 
   return (
@@ -109,7 +159,10 @@ const Layout = () => {
               <MenuItem value={QueueModelsOptions.mm1}>M/M/1</MenuItem>
               <MenuItem value={QueueModelsOptions.mms}>M/M/s</MenuItem>
               <MenuItem value={QueueModelsOptions.mmsk}>M/M/s/K</MenuItem>
-              <MenuItem value={QueueModelsOptions.mg1}>M/G/1</MenuItem>
+              <MenuItem value={QueueModelsOptions.mg1AndMd1}>
+                M/G/1 And M/D/1
+              </MenuItem>
+              <MenuItem value={QueueModelsOptions.mek1}>M/Ek/1</MenuItem>
             </Select>
           </FormControl>
 
@@ -131,7 +184,7 @@ const Layout = () => {
             <Button
               variant='contained'
               disabled={inputNotComplete}
-              onClick={calculate}
+              onClick={calculateParams}
             >
               Calculate
             </Button>
@@ -152,7 +205,21 @@ const Layout = () => {
 
             <br />
 
-            <PnCalculator />
+            <QueueModelCost
+              costParams={costParams}
+              setCostParams={setCostParams}
+              calculateCost={calculateCost}
+              cost={cost}
+            />
+
+            <br />
+
+            <PnCalculator
+              n={n}
+              setN={setN}
+              pns={pns}
+              calculatePns={calculatePns}
+            />
           </>
         )}
       </div>

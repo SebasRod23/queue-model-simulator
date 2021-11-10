@@ -17,12 +17,13 @@ const QueueModelCharacteristics = (props: QueueModelCharacteristicsProps) => {
     w: 'W',
     wq: 'Wq',
     lambdaE: 'λe',
-    pn: 'Pn',
+    p0: 'P0',
+    pk: 'Pk',
   };
 
   return (
     <>
-      <h1>Queue Model Characteristics</h1>
+      <h1>Queue Model Parameters</h1>
       <div css={divStyleColumns}>
         {Object.keys(props.characteristicsData).map(
           (characteristicKey, index) => (
@@ -30,12 +31,13 @@ const QueueModelCharacteristics = (props: QueueModelCharacteristicsProps) => {
               key={`input-${index}-${characteristicKey}`}
               label={labels[characteristicKey]}
               variant='outlined'
-              required
               InputProps={{
                 readOnly: true,
               }}
               focused={false}
-              value={props.characteristicsData[characteristicKey]}
+              value={Number(
+                props.characteristicsData[characteristicKey],
+              ).toFixed(5)}
             />
           ),
         )}

@@ -1,4 +1,4 @@
-import { QueueData } from '../interfaces/QueueData';
+import { QueueData, QueueModelValues } from '../interfaces/types';
 
 export class MMsk {
   private static lambda: number;
@@ -17,12 +17,15 @@ export class MMsk {
     lambdaE: 0,
   };
 
-  public static simulate = async (
-    lambda: number,
-    mi: number,
-    s: number,
-    k: number,
-  ): Promise<QueueData> => {
+  public static simulate = async ({
+    lambda,
+    mi,
+    s,
+    k,
+  }: QueueModelValues): Promise<QueueData> => {
+    if (!lambda || !mi || !s || !k)
+      return Promise.reject('Parameters are undefined');
+
     if (
       lambda <= 0 ||
       mi <= 0 ||
