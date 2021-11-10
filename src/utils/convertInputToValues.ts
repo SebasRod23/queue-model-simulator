@@ -1,6 +1,4 @@
-import { InputValues } from '../interfaces/types';
-
-export const convertInputToValues = (data: InputValues) => {
+export const convertInputToValues = (data: any) => {
   const transformedData: { [key: string]: number } = {};
 
   Object.keys(data).forEach((key) => {

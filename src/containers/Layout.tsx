@@ -23,8 +23,9 @@ import { MEk1 } from '../classes/MEk1';
 import { MG1 } from '../classes/MG1';
 import { MMsk } from '../classes/MMsk';
 import { MMs } from '../classes/MMs';
-import { InputValues, QueueData } from '../interfaces/types';
+import { InputValues, QueueCostParams, QueueData } from '../interfaces/types';
 import { divStyleRows } from '../styles/styles';
+import QueueModelCost from '../components/QueueModelCost';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -54,12 +55,20 @@ const Layout = () => {
     [QueueModelsOptions.mek1]: ['lambda', 'mean', 'k'],
   };
 
-  const [optionQueueModel, setOptionQueueModel] = useState<string>('1');
-  const [inputValues, setInputValues] = useState<InputValues>(emptyInputValues);
-
   const [inputNotComplete, setInputNotComplete] = useState(true);
 
+  const [optionQueueModel, setOptionQueueModel] = useState<string>('1');
+
+  const [inputValues, setInputValues] = useState<InputValues>(emptyInputValues);
+
   const [result, setResult] = useState<undefined | QueueData>();
+
+  const [costParams, setCostParams] = useState<QueueCostParams>({
+    Cw: '',
+    Cs: '',
+  });
+
+  const [cost, setCost] = useState<undefined | number>();
 
   const [n, setN] = useState('');
   const [pns, setPns] = useState<number[]>([]);
@@ -83,6 +92,16 @@ const Layout = () => {
     const inputToValues = convertInputToValues(inputValues);
     const params = await getCurrentQueueModel().simulate(inputToValues);
     setResult(params);
+  };
+
+  const calculateCost = async () => {
+    const inputToValues = convertInputToValues(costParams);
+
+    const newCost = await getCurrentQueueModel().calculateCost(
+      inputToValues.Cw,
+      inputToValues.Cs,
+    );
+    setCost(newCost);
   };
 
   const calculatePns = async () => {
@@ -183,6 +202,15 @@ const Layout = () => {
         {result && (
           <>
             <QueueModelCharacteristics characteristicsData={result} />
+
+            <br />
+
+            <QueueModelCost
+              costParams={costParams}
+              setCostParams={setCostParams}
+              calculateCost={calculateCost}
+              cost={cost}
+            />
 
             <br />
 

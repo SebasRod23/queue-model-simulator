@@ -30,3 +30,8 @@ export interface QueueData extends ObjectWithKeyStr {
   p0: number;
   pk?: number;
 }
+
+export interface QueueCostParams extends ObjectWithKeyStr {
+  Cw: string;
+  Cs: string;
+}
