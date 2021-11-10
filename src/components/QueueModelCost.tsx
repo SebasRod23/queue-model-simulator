@@ -52,22 +52,22 @@ const QueueModelCost = (props: QueueModelCostProps) => {
         </Button>
       </form>
 
-      <br />
-      <br />
-
       {props.cost && (
-        <TextField
-          label={'Total Cost'}
-          variant='outlined'
-          InputProps={{
-            readOnly: true,
-          }}
-          focused={false}
-          value={`$${props.cost.toFixed(2)}`}
-        />
+        <>
+          <br />
+          <br />
+          <TextField
+            label={'Total Cost'}
+            variant='outlined'
+            InputProps={{
+              readOnly: true,
+            }}
+            focused={false}
+            value={`$${props.cost.toFixed(2)}`}
+          />
+          <br />
+        </>
       )}
-
-      <br />
     </>
   );
 };
