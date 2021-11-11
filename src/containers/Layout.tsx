@@ -47,6 +47,11 @@ const Layout = () => {
     sd: '',
   };
 
+  const emptyCostParams = {
+    Cw: '',
+    Cs: '',
+  };
+
   let requiredByOption: { [key: string]: string[] } = {
     [QueueModelsOptions.mm1]: ['lambda', 'mi'],
     [QueueModelsOptions.mms]: ['lambda', 'mi', 's'],
@@ -63,14 +68,12 @@ const Layout = () => {
 
   const [result, setResult] = useState<undefined | QueueData>();
 
-  const [costParams, setCostParams] = useState<QueueCostParams>({
-    Cw: '',
-    Cs: '',
-  });
+  const [costParams, setCostParams] =
+    useState<QueueCostParams>(emptyCostParams);
 
   const [cost, setCost] = useState<undefined | number>();
 
-  const [n, setN] = useState('');
+  const [n, setN] = useState<string>('');
   const [pns, setPns] = useState<number[]>([]);
 
   const getCurrentQueueModel = () => {
@@ -121,8 +124,15 @@ const Layout = () => {
 
   const clean = () => {
     setInputValues(emptyInputValues);
-    validateCompleteInput(emptyInputValues);
     setResult(undefined);
+
+    setCostParams(emptyCostParams);
+    setCost(undefined);
+
+    setN('');
+    setPns([]);
+
+    validateCompleteInput(emptyInputValues);
   };
 
   const handleQueueModelChange = (event: SelectChangeEvent) => {
