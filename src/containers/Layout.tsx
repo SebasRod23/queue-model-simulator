@@ -26,6 +26,7 @@ import { MMs } from '../classes/MMs';
 import { InputValues, QueueCostParams, QueueData } from '../interfaces/types';
 import { divStyleRows } from '../styles/styles';
 import QueueModelCost from '../components/QueueModelCost';
+import WarningSnackbar from '../components/WarningSnackbar';
 
 const rootDivStyle = css({
   margin: '32px 24px',
@@ -76,6 +77,9 @@ const Layout = () => {
   const [n, setN] = useState<string>('');
   const [pns, setPns] = useState<number[]>([]);
 
+  const [open, setOpen] = useState(false);
+  const [warning, setWarning] = useState<string>();
+
   const getCurrentQueueModel = () => {
     switch (optionQueueModel) {
       case QueueModelsOptions.mm1:
@@ -93,23 +97,42 @@ const Layout = () => {
 
   const calculateParams = async () => {
     const inputToValues = convertInputToValues(inputValues);
-    const params = await getCurrentQueueModel().simulate(inputToValues);
-    setResult(params);
+    console.log(inputToValues);
+    getCurrentQueueModel()
+      .simulate(inputToValues)
+      .then(
+        (params) => setResult(params),
+        (error) => {
+          setWarning(error);
+          handleClick();
+        },
+      );
   };
 
   const calculateCost = async () => {
     const inputToValues = convertInputToValues(costParams);
 
-    const newCost = await getCurrentQueueModel().calculateCost(
-      inputToValues.Cw,
-      inputToValues.Cs,
-    );
-    setCost(newCost);
+    getCurrentQueueModel()
+      .calculateCost(inputToValues.Cw, inputToValues.Cs)
+      .then(
+        (newCost) => setCost(newCost),
+        (error) => {
+          setWarning(error);
+          handleClick();
+        },
+      );
   };
 
   const calculatePns = async () => {
-    const newPns = await getCurrentQueueModel().generateToPn(Number(n));
-    setPns(newPns);
+    getCurrentQueueModel()
+      .generateToPn(Number(n))
+      .then(
+        (newPns) => setPns(newPns),
+        (error) => {
+          setWarning(error);
+          handleClick();
+        },
+      );
   };
 
   const validateCompleteInput = (inputVals: InputValues) => {
@@ -133,6 +156,7 @@ const Layout = () => {
     setPns([]);
 
     validateCompleteInput(emptyInputValues);
+    setWarning('');
   };
 
   const handleQueueModelChange = (event: SelectChangeEvent) => {
@@ -141,6 +165,10 @@ const Layout = () => {
     setOptionQueueModel(option);
 
     clean();
+  };
+
+  const handleClick = () => {
+    setOpen(true);
   };
 
   return (
@@ -232,6 +260,8 @@ const Layout = () => {
             />
           </>
         )}
+
+        <WarningSnackbar warning={warning} setOpen={setOpen} open={open} />
       </div>
     </>
   );
