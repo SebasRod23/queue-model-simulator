@@ -104,7 +104,7 @@ const Layout = () => {
         (params) => setResult(params),
         (error) => {
           setWarning(error);
-          handleClick();
+          openSnackbar();
         },
       );
   };
@@ -118,7 +118,7 @@ const Layout = () => {
         (newCost) => setCost(newCost),
         (error) => {
           setWarning(error);
-          handleClick();
+          openSnackbar();
         },
       );
   };
@@ -130,7 +130,7 @@ const Layout = () => {
         (newPns) => setPns(newPns),
         (error) => {
           setWarning(error);
-          handleClick();
+          openSnackbar();
         },
       );
   };
@@ -167,7 +167,7 @@ const Layout = () => {
     clean();
   };
 
-  const handleClick = () => {
+  const openSnackbar = () => {
     setOpen(true);
   };
 
