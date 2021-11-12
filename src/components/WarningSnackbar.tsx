@@ -1,14 +1,14 @@
 import React from 'react';
 import { Alert, Snackbar } from '@mui/material';
 
-interface AuthSnackbarProps {
+interface WarningSnackbarProps {
   warning: string | undefined;
   open: boolean | undefined;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const WarningSnackbar: React.FC<AuthSnackbarProps> = (
-  props: AuthSnackbarProps,
+const WarningSnackbar: React.FC<WarningSnackbarProps> = (
+  props: WarningSnackbarProps,
 ) => {
   const handleClose = () => {
     props.setOpen(false);
