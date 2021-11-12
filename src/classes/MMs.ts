@@ -22,7 +22,7 @@ export class MMs {
     if (!lambda || !mi || !s) return Promise.reject('Parameters are undefined');
 
     if (lambda <= 0 || mi <= 0 || s <= 0 || lambda >= s * mi)
-      return Promise.reject('Parameters not valid');
+      return Promise.reject('Invalid parameters');
 
     this.lambda = lambda;
     this.mi = mi;
@@ -64,7 +64,7 @@ export class MMs {
   };
 
   public static generateToPn = async (n: number): Promise<number[]> => {
-    if (n <= 0) return Promise.reject('Parameters not valid');
+    if (n <= 0) return Promise.reject('Invalid parameters');
     const pn = [this.data.p0];
     for (let i = 1; i <= n; i++) {
       pn.push(this.calculatePn(i));
@@ -76,7 +76,7 @@ export class MMs {
     Cw: number,
     Cs: number,
   ): Promise<number> => {
-    if (Cw < 0 || Cs < 0) return Promise.reject('Parameters not valid');
+    if (Cw < 0 || Cs < 0) return Promise.reject('Invalid parameters');
     return this.data.lq * Cw + this.s * Cs;
   };
 }
