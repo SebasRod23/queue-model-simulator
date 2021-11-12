@@ -57,7 +57,7 @@ const PnCalculator = (props: PnCalculatorProps) => {
   };
 
   const handleInputChange = (strNumber: string) => {
-    strNumber = strNumber.replace(/[ .]/g, '');
+    strNumber = strNumber.replace(/[ .-]/g, '');
     const number = Number(strNumber);
     if (isNaN(number) && strNumber !== '') return;
 

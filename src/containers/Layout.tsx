@@ -97,7 +97,7 @@ const Layout = () => {
 
   const calculateParams = async () => {
     const inputToValues = convertInputToValues(inputValues);
-    console.log(inputToValues);
+
     getCurrentQueueModel()
       .simulate(inputToValues)
       .then(
