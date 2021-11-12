@@ -49,7 +49,7 @@ const PnCalculator = (props: PnCalculatorProps) => {
             navigator.clipboard.writeText(String(props.pns[index]));
           }}
         >
-          <ListItemText primary={`P${index}`} style={{ maxWidth: '50px' }} />
+          <ListItemText primary={`P${index}`} style={{ maxWidth: '100px' }} />
           <ListItemText primary={`${props.pns[index]}`} />
         </ListItemButton>
       </ListItem>
@@ -57,7 +57,7 @@ const PnCalculator = (props: PnCalculatorProps) => {
   };
 
   const handleInputChange = (strNumber: string) => {
-    strNumber = strNumber.replace(/[ .]/g, '');
+    strNumber = strNumber.replace(/[ .-]/g, '');
     const number = Number(strNumber);
     if (isNaN(number) && strNumber !== '') return;
 

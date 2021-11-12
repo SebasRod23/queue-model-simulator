@@ -14,7 +14,7 @@ interface QueueModelCostProps {
 
 const QueueModelCost = (props: QueueModelCostProps) => {
   const handleInputChange = (name: string, strNumber: string) => {
-    strNumber = strNumber.replace(/[ ]/g, '');
+    strNumber = strNumber.replace(/[ -]/g, '');
     const number = Number(strNumber);
     if (isNaN(number) && strNumber !== '') return;
 
