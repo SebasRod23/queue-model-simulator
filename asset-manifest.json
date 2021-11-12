@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/queue-model-simulator/static/css/main.80740724.chunk.css",
-    "main.js": "/queue-model-simulator/static/js/main.2430a437.chunk.js",
-    "main.js.map": "/queue-model-simulator/static/js/main.2430a437.chunk.js.map",
+    "main.js": "/queue-model-simulator/static/js/main.4fe9dce6.chunk.js",
+    "main.js.map": "/queue-model-simulator/static/js/main.4fe9dce6.chunk.js.map",
     "runtime-main.js": "/queue-model-simulator/static/js/runtime-main.923c95d6.js",
     "runtime-main.js.map": "/queue-model-simulator/static/js/runtime-main.923c95d6.js.map",
-    "static/js/2.ca925773.chunk.js": "/queue-model-simulator/static/js/2.ca925773.chunk.js",
-    "static/js/2.ca925773.chunk.js.map": "/queue-model-simulator/static/js/2.ca925773.chunk.js.map",
+    "static/js/2.e8d94b13.chunk.js": "/queue-model-simulator/static/js/2.e8d94b13.chunk.js",
+    "static/js/2.e8d94b13.chunk.js.map": "/queue-model-simulator/static/js/2.e8d94b13.chunk.js.map",
     "index.html": "/queue-model-simulator/index.html",
     "static/css/main.80740724.chunk.css.map": "/queue-model-simulator/static/css/main.80740724.chunk.css.map",
-    "static/js/2.ca925773.chunk.js.LICENSE.txt": "/queue-model-simulator/static/js/2.ca925773.chunk.js.LICENSE.txt"
+    "static/js/2.e8d94b13.chunk.js.LICENSE.txt": "/queue-model-simulator/static/js/2.e8d94b13.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.923c95d6.js",
-    "static/js/2.ca925773.chunk.js",
+    "static/js/2.e8d94b13.chunk.js",
     "static/css/main.80740724.chunk.css",
-    "static/js/main.2430a437.chunk.js"
+    "static/js/main.4fe9dce6.chunk.js"
   ]
 }
