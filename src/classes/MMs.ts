@@ -29,13 +29,25 @@ export class MMs {
     this.s = s;
 
     this.data.rho = this.lambda / (this.s * this.mi);
+    if (isNaN(this.data.rho))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.p0 = this.calculateP0();
+    if (isNaN(this.data.p0))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.lq =
       (this.data.p0 * Math.pow(this.lambda / mi, this.s) * this.data.rho) /
       (this.s! * Math.pow(1 - this.data.rho, 2));
+    if (isNaN(this.data.lq))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.l = this.data.lq + this.lambda / this.mi;
+    if (isNaN(this.data.l))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.wq = this.data.lq / this.lambda;
+    if (isNaN(this.data.wq))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.w = this.data.wq + 1 / this.mi;
+    if (isNaN(this.data.w))
+      return Promise.reject('Values are too big/too small to calculate');
 
     return this.data;
   };
