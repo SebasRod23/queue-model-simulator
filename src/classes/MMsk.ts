@@ -26,14 +26,7 @@ export class MMsk {
     if (!lambda || !mi || !s || !k)
       return Promise.reject('Parameters are undefined');
 
-    if (
-      lambda <= 0 ||
-      mi <= 0 ||
-      s <= 0 ||
-      k <= 0 ||
-      s > k ||
-      lambda === s * mi
-    )
+    if (lambda <= 0 || mi <= 0 || s <= 0 || k <= 0 || s > k || lambda >= s * mi)
       return Promise.reject('Invalid parameters');
 
     this.lambda = lambda;
@@ -42,13 +35,29 @@ export class MMsk {
     this.k = k;
 
     this.data.rho = this.lambda / (this.s * this.mi);
+    if (isNaN(this.data.rho))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.p0 = this.calculateP0();
+    if (isNaN(this.data.p0))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.pk = this.calculatePn(this.k);
+    if (isNaN(this.data.pk))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.lq = this.calculateLq();
+    if (isNaN(this.data.lq))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.lambdaE = this.lambda * (1 - this.data.pk);
+    if (isNaN(this.data.lambdaE))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.wq = this.data.lq / this.data.lambdaE;
+    if (isNaN(this.data.wq))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.w = this.data.wq + 1 / this.mi;
+    if (isNaN(this.data.w))
+      return Promise.reject('Values are too big/too small to calculate');
     this.data.l = this.data.lambdaE * this.data.w;
+    if (isNaN(this.data.l))
+      return Promise.reject('Values are too big/too small to calculate');
 
     return this.data;
   };
